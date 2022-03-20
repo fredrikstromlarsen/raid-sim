@@ -1,6 +1,6 @@
 # RAID SIM
 
-The ` backend/`` folder contains the "drives" and their data. The  `frontend/` folder is the filesystem seen from the users perspective, no drives present, just the files and folders.
+The ` backend/` folder contains the "drives" and their data. The  `frontend/` folder is the filesystem seen from the users perspective, no drives present, just the files and folders.
 
 ## How it should work
 
