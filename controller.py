@@ -1,5 +1,7 @@
-# TODO: UPDATE: While key is not pressed in watcher()
-# TODO: FIX: Unintended behaviour where second check always triggers if first check was triggered
+# TODO: 
+# - UPDATE: While key is not pressed in watcher()
+# - FIX: Unintended behaviour where second check always triggers if first check was triggered
+# - FIX: Unable to remove dirs in cleanup()
 
 if __name__ == '__main__':
     print("Run the main.py file instead of this one.")
