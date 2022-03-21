@@ -80,10 +80,6 @@ if __name__ == '__main__':
         drives_used = int(input(f"\nHow many drives do you want to use? (min: {raid_info[raid_level]})\n"))
 
     controller.create_drives(drives_used)
-    controller.start_watcher()
-
-    sleep(2)
-
-    controller.cleanup()
+    controller.watcher()
 
     exit(0)
