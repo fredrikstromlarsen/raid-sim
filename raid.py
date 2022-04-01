@@ -15,9 +15,9 @@ def stripe(fn):
     fstripes = []
     f = open(fn, 'rb').read()
 
-    # Split the file into stripes of length 64 / 64 bytes.
-    for i in range(0, len(f), 64):
-        fstripes.append(f[i:i + 64])
+    # Split the file into stripes of 64kB.
+    for i in range(0, len(f), 65536):
+        fstripes.append(f[i:i + 65536])
     return fstripes
 
 

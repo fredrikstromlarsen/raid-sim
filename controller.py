@@ -8,7 +8,6 @@ if __name__ == '__main__':
     exit(1)
 
 from shutil import rmtree
-from pprint import pprint
 from atexit import register
 from time import sleep
 import os
@@ -41,7 +40,7 @@ def cleanup():
 
 # Run cleanup() when ctrl+c is pressed or exit(0) is run.
 # Same as: atexit.register(cleanup)
-#register(cleanup)
+register(cleanup)
 
 # 64KB buffer is used for reading large files, so we don't consume all the ram.
 BUFFER_SIZE = 65536
@@ -57,7 +56,6 @@ def update_backend(raid_level, raid_info, disks_used, file_names_list):
 
     raid_function = getattr(raid, raid_info[raid_level]["function_name"])
     raid_function(file_names_list, disks_used)
-    print("Ran raid function.")
 
     return True
 
