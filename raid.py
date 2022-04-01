@@ -9,6 +9,8 @@ root_dir = path.abspath(path.dirname(__file__))
 backend_dir = path.join(root_dir, "backend")
 alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
             "V", "W", "X", "Y", "Z"]
+#stripe_size = 32 * 1024
+stripe_size = 1024 * 1024
 
 
 def stripe(fn):
@@ -16,8 +18,8 @@ def stripe(fn):
     f = open(fn, 'rb').read()
 
     # Split the file into stripes of 64kB.
-    for i in range(0, len(f), 65536):
-        fstripes.append(f[i:i + 65536])
+    for i in range(0, len(f), stripe_size):
+        fstripes.append(f[i:i + stripe_size])
     return fstripes
 
 
@@ -32,7 +34,10 @@ def stripe(fn):
 
 def write_chunk(chunk, du):
     # Write chunk data to the backend.
-    # Name each chunk in this format: "AA", "AB", "AC", etc.
+    # Name each chunk in this format: "AAAA", "AAAB", "AAAC", etc.
+    # Essentially, we have the capacity to store 24^4 = 16,384 chunks
+    # across as many disks as the user chooses to use - 16,384 chunks
+    # * 64kB = 1,024,768 bytes = 1 GB per disk.
     for a in alphabet:
         for b in alphabet:
             for c in alphabet:

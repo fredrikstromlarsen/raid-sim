@@ -33,6 +33,12 @@ def create_drives(n):
     return True
 
 
+def format_drives():
+    for drive in os.listdir(backend_dir):
+        drive_path = os.path.join(backend_dir, drive)
+        rmtree(drive_path)
+
+
 def cleanup():
     rmtree(backend_dir)
     return True
@@ -47,13 +53,14 @@ BUFFER_SIZE = 65536
 
 
 def update_backend(raid_level, raid_info, disks_used, file_names_list):
-    # Regardless of wether a file or a file name was changed,
+    # Regardless of whether a file or a file name was changed,
     # operations has to be the same.
     # So, if a file was changed, it will be copied to the backend,
     # and striped, duplicated or whatever the process for the given
     # raid level is.
     # Read contents of every file in frontend in chunks of BUFFER_SIZE bytes.
 
+    # Prevent duplicates in the backend by removing all files first.
     raid_function = getattr(raid, raid_info[raid_level]["function_name"])
     raid_function(file_names_list, disks_used)
 
@@ -118,6 +125,7 @@ def watcher(rl, ri, du, fs_hash=None, file_hashes_list=[]):
         fs_hash = get_list_hash(entries_merged)
 
         if fs_hash != prev_fs_hash:
+            #format_drives()
             update_backend(rl, ri, du, entries_divided[0])
         else:
             # Create a "backup" of the current version of the list.
@@ -130,5 +138,6 @@ def watcher(rl, ri, du, fs_hash=None, file_hashes_list=[]):
                 file_hashes_list.append(get_file_hash(entry))
 
             if not compare_lists(file_hashes_list, prev_file_hashes_list):
+                #format_drives()
                 update_backend(rl, ri, du, entries_divided[0])
         sleep(5)
