@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+# This file is used to get user input, and call controller with input parameters
+
 import controller
 import math
-from time import sleep
 
 
 class RaidInfo:
@@ -56,19 +57,19 @@ class RaidInfo:
 
 if __name__ == '__main__':
     raid_info = {
-        "0": 2,
-        "1": 2,
-        "2": 3,
-        "3": 3,
-        "4": 3,
-        "5": 3,
-        "6": 4,
-        "01": 4,
-        "03": 6,
-        "10": 4,
-        "50": 9,
-        "60": 8,
-        "100": 8
+        "0": {"min_disks": 2, "function_name": "r0"},
+        "1": {"min_disks": 2, "function_name": "r1"},
+        "2": {"min_disks": 3, "function_name": "r2"},
+        "3": {"min_disks": 3, "function_name": "r3"},
+        "4": {"min_disks": 3, "function_name": "r4"},
+        "5": {"min_disks": 3, "function_name": "r5"},
+        "6": {"min_disks": 4, "function_name": "r6"},
+        "01": {"min_disks": 4, "function_name": "r01"},
+        "03": {"min_disks": 6, "function_name": "r03"},
+        "10": {"min_disks": 4, "function_name": "r10"},
+        "50": {"min_disks": 9, "function_name": "r50"},
+        "60": {"min_disks": 8, "function_name": "r60"},
+        "100": {"min_disks": 8, "function_name": "r100"}
     }
 
     raid_level = -1
@@ -76,10 +77,10 @@ if __name__ == '__main__':
         raid_level = input(f"\nWhat RAID level should be used?\n")
 
     drives_used = -1
-    while drives_used < raid_info[raid_level]:
-        drives_used = int(input(f"\nHow many drives do you want to use? (min: {raid_info[raid_level]})\n"))
+    while drives_used < raid_info[raid_level]["min_disks"]:
+        drives_used = int(input(f"\nHow many drives do you want to use? (min: {raid_info[raid_level]['min_disks']})\n"))
 
     controller.create_drives(drives_used)
-    controller.watcher()
+    controller.watcher(raid_level, raid_info, drives_used)
 
     exit(0)
